@@ -1,0 +1,5 @@
+[update_manager pa_cal]
+type: git_repo
+path: ~/klipper-pa_cal
+origin: https://github.com/ksanislo/klipper-pa_cal.git
+is_system_service: False
