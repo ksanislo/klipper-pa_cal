@@ -45,7 +45,7 @@ set -e
 
 # Find SRCDIR from the pathname of this script
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )"/ && pwd )"
-SRCDIR="${SCRIPTDIR}/src/"
+SRCDIR="${SCRIPTDIR}/src"
 
 # Parse command line arguments
 while getopts "k:" arg; do
