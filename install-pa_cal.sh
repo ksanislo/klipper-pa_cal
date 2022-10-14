@@ -38,7 +38,7 @@ configure_klipper()
 	cat ${KCONFIG_PATH}/printer.cfg >> ${KCONFIG_PATH}/.printer.cfg.tmp
 	mv ${KCONFIG_PATH}/.printer.cfg.tmp ${KCONFIG_PATH}/printer.cfg
     else
-        echo -e "[save_variables] already exist in printer.cfg [SKIPPED]"
+        echo -e "[include pa_cal.cfg] already exist in printer.cfg [SKIPPED]"
     fi
 }
 
