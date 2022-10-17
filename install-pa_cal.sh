@@ -20,10 +20,19 @@ configure_klipper()
 	echo >> ${KCONFIG_PATH}/.printer.cfg.tmp
 	cat ${KCONFIG_PATH}/printer.cfg >> ${KCONFIG_PATH}/.printer.cfg.tmp
 	mv ${KCONFIG_PATH}/.printer.cfg.tmp ${KCONFIG_PATH}/printer.cfg
-
-        cp -n "${SCRIPTDIR}/file_templates/saved_variables.txt" "${KCONFIG_PATH}/saved_variables.cfg"
     else
         echo -e "[save_variables] already exist in printer.cfg [SKIPPED]"
+    fi
+
+    # If saved_variables.cfg then merge the files
+    if [ -f "${KCONFIG_PATH}/saved_variables.cfg" ]; then
+        echo -e "Adding saved variables to saved_variables.cfg"
+        awk -F';' '{print $1}' "${SCRIPTDIR}/file_templates/saved_variables.txt" | awk -v OFS=' ' '{$1=$1}1' > "${SCRIPTDIR}/saved_variables_cleanup.temp" 
+        awk '{if(!seen[$0]++)print $0}' "${SCRIPTDIR}/saved_variables_cleanup.temp" "${KCONFIG_PATH}/saved_variables.cfg" > "${SCRIPTDIR}/saved_variables_merged.temp" 
+        cp "${SCRIPTDIR}/saved_variables_merged.temp" "${KCONFIG_PATH}/saved_variables.cfg"
+    else
+        echo -e "Creating saved_variables.cfg"
+        cp -n "${SCRIPTDIR}/file_templates/saved_variables.txt" "${KCONFIG_PATH}/saved_variables.cfg"
     fi
 
     echo -e "Adding [include pa_cal.cfg] to printer.cfg"
@@ -38,7 +47,7 @@ configure_klipper()
 	cat ${KCONFIG_PATH}/printer.cfg >> ${KCONFIG_PATH}/.printer.cfg.tmp
 	mv ${KCONFIG_PATH}/.printer.cfg.tmp ${KCONFIG_PATH}/printer.cfg
     else
-        echo -e "[save_variables] already exist in printer.cfg [SKIPPED]"
+        echo -e "[include pa_cal.cfg] already exist in printer.cfg [SKIPPED]"
     fi
 }
 
